@@ -1,0 +1,14 @@
+Routes
+
+/ landing
+
+/auth/sign-up -> Signup
+/auth/sign-in -> Signin
+/auth/forgot-password -> ForgotPassword
+
+/u -> Template
+/u/todo/:id -> Todos
+/u/timers -> Timers
+/u/notes -> Notes
+/u/settings -> Settings
+/u/draw -> Draw
