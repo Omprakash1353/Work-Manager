@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { ThemeProvider } from "./context/theme-provider";
 import "./index.css";
 const AppLayout = React.lazy(() => import("./components/layout/AppLayout"));
 const SignUp = React.lazy(() => import("./pages/SignUp"));
@@ -64,6 +65,8 @@ function App() {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );

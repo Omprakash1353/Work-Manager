@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
     darkMode: ["class"],
     content: [
     "./index.html",
@@ -52,8 +52,24 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
   			}
   		}
+  	},
+  	animation: {},
+  	keyframes: {},
+  	backgroundImage: {
+  		'grid-gray-900': 'linear-gradient(to right, rgb(17 24 39 / var(--tw-bg-opacity)) 1px, transparent 1px), linear-gradient(to bottom, rgb(17 24 39 / var(--tw-bg-opacity)) 1px, transparent 1px)',
+  		'grid-white': 'linear-gradient(to right, rgb(255 255 255 / var(--tw-bg-opacity)) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / var(--tw-bg-opacity)) 1px, transparent 1px)',
   	}
   },
   plugins: [require("tailwindcss-animate")],
