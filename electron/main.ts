@@ -1,28 +1,19 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import { fileURLToPath } from "node:url";
+import { app, BrowserWindow } from "electron";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { setupIpcHandlers } from "./main/ipc-handlers";
+import { WindowManager } from "./main/window";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export const __filename = fileURLToPath(import.meta.url);
+export const __dirname = path.dirname(__filename);
 
 process.env.APP_ROOT = path.join(__dirname, "..");
 process.env.VITE_PUBLIC = path.join(process.env.APP_ROOT, "public");
 
-let mainWindow: BrowserWindow | null = null;
+const windowManager = new WindowManager();
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    autoHideMenuBar: true,
-    transparent: true,
-    visualEffectState: "active",
-    webPreferences: {
-      preload: path.join(__dirname, "preload.mjs"),
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-  });
+  const mainWindow = windowManager.createWindow();
 
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow?.webContents.send("main-process-message", {
@@ -32,31 +23,8 @@ function createWindow() {
     });
   });
 
-  // Window control IPC handlers
-  ipcMain.on("window-minimize", () => {
-    mainWindow?.minimize();
-  });
-
-  ipcMain.on("window-maximize", () => {
-    if (mainWindow?.isMaximized()) {
-      mainWindow?.unmaximize();
-    } else {
-      mainWindow?.maximize();
-    }
-  });
-
-  ipcMain.on("window-close", () => {
-    mainWindow?.close();
-  });
-
-  // Load the app
-  const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
-  if (VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(VITE_DEV_SERVER_URL);
-    mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.loadFile(path.join(process.env.APP_ROOT, "dist", "index.html"));
-  }
+  setupIpcHandlers(windowManager);
+  windowManager.loadApp();
 }
 
 app.whenReady().then(createWindow);

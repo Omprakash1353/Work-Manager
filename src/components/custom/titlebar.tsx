@@ -1,49 +1,63 @@
-import { CSSProperties } from "react";
+import { cn } from "@/lib/utils";
+import { useWindowStore } from "@/store/window-store";
+import { Maximize2, Minus, X } from "lucide-react";
 
-interface Props {
-  dragStyle: CSSProperties;
-  noDragStyle: CSSProperties;
-}
+export function Titlebar() {
+  const isCompact = useWindowStore((state) => state.isCompact);
 
-export default function TitleBar({ dragStyle, noDragStyle }: Props) {
-  const handleWindowAction = (action: string) => {
-    try {
-      window.electron?.ipcRenderer?.send(action);
-    } catch (error) {
-      console.error("Window control error:", error);
-    }
+  const handleMinimize = () => {
+    window.ipcRenderer.send("window:minimize");
+  };
+
+  const handleMaximize = () => {
+    window.ipcRenderer.send("window:maximize");
+  };
+
+  const handleClose = () => {
+    window.ipcRenderer.send("window:close");
   };
 
   return (
     <div
-      className="w-full h-[35px] flex items-center justify-between px-4 bg-white backdrop-blur-md border-b"
-      style={dragStyle}
+      className={cn(
+        "flex items-center bg-background/95 backdrop-blur-sm border-b border-border/40 select-none app-drag-handle relative",
+        isCompact ? "h-8" : "h-10"
+      )}
     >
-      {/* Window Title */}
-      <div
-        className="w-full text-center text-sm font-semibold text-gray-600"
-        style={dragStyle}
-      >
-        Todo Application
+      {/* Center section with app title */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <span className="text-sm font-medium">
+          {!isCompact && "Todo Application"}
+        </span>
       </div>
 
-      {/* Window Controls (non-draggable) */}
-      <div className="flex space-x-2" style={noDragStyle}>
+      {/* Right section with window controls */}
+      <div className={cn("ml-auto flex items-center app-no-drag")}>
+        {!isCompact && (
+          <>
+            <button
+              onClick={handleMinimize}
+              className="h-10 w-10 inline-flex items-center justify-center hover:bg-accent transition-colors"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <button
+              onClick={handleMaximize}
+              className="h-10 w-10 inline-flex items-center justify-center hover:bg-accent transition-colors"
+            >
+              <Maximize2 className="h-4 w-4" />
+            </button>
+          </>
+        )}
         <button
-          className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600"
-          onClick={() => handleWindowAction("window-close")}
-          style={noDragStyle}
-        />
-        <button
-          className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600"
-          onClick={() => handleWindowAction("window-minimize")}
-          style={noDragStyle}
-        />
-        <button
-          className="w-3 h-3 bg-green-500 rounded-full hover:bg-green-600"
-          onClick={() => handleWindowAction("window-maximize")}
-          style={noDragStyle}
-        />
+          onClick={handleClose}
+          className={cn(
+            "inline-flex items-center justify-center hover:bg-destructive hover:text-destructive-foreground transition-colors",
+            isCompact ? "h-8 w-8" : "h-10 w-10"
+          )}
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );

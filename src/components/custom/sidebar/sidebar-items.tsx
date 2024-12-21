@@ -4,6 +4,7 @@ import {
   Eraser,
   Inbox,
   Layers,
+  ListTodo,
   NotebookText,
   Star,
   Timer,
@@ -22,6 +23,7 @@ export const sidebarItems: SidebarGroup[] = [
       { icon: <Archive />, label: "Someday", url: "/someday" },
       { icon: <Timer />, label: "Time", url: "/timers" },
       { icon: <Eraser />, label: "Draw", url: "/draw", notifications: 1 },
+      { icon: <ListTodo />, label: "Todos", url: "/todos", notifications: 1 },
     ],
   },
   {

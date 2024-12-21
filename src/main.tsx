@@ -11,7 +11,8 @@ const ForgotPassword = React.lazy(() => import("./pages/ForgotPassword"));
 const AuthLayout = React.lazy(() => import("./components/layout/Auth"));
 const Template = React.lazy(() => import("./pages/Template"));
 const Todos = React.lazy(() => import("./pages/Todos"));
-const Draws = React.lazy(() => import("./pages/Draws"));
+const DrawMenu = React.lazy(() => import("./pages/Draw/DrawMenu"));
+const Draws = React.lazy(() => import("./pages/Draw/Draws"));
 const Timers = React.lazy(() => import("./pages/Timers"));
 const Notes = React.lazy(() => import("./pages/Notes"));
 const Settings = React.lazy(() => import("./pages/Settings"));
@@ -26,7 +27,8 @@ const router = createBrowserRouter([
       { path: "/timers", element: <Timers /> },
       { path: "/notes", element: <Notes /> },
       { path: "/settings", element: <Settings /> },
-      { path: "/draw", element: <Draws /> },
+      { path: "/draw", element: <DrawMenu /> },
+      { path: "/draw/:id", element: <Draws /> },
     ],
   },
   {
